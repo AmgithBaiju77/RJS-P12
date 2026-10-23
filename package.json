@@ -32,5 +32,8 @@
       "last 1 firefox version",
       "last 1 edge version"
     ]
+  },
+  "devDependencies": {
+    "eslint-plugin-jest": "^25.7.0"
   }
 }
