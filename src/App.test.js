@@ -1,60 +1,97 @@
-import "@testing-library/jest-dom";
 import React from "react";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render, screen, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import App from "./App";
 
+describe("React Shopping Cart", () => {
 test("displays the shopping cart heading", () => {
-  render(<App />);
+render(<App />);
 
-  expect(
-    screen.getByRole("heading", { name: /shopping cart/i })
-  ).toBeInTheDocument();
+
+expect(
+  screen.getByRole("heading", { name: /shopping cart/i })
+).toBeInTheDocument();
+
+
 });
 
 test("displays all products", () => {
-  render(<App />);
+render(<App />);
 
-  expect(screen.getByText("Laptop")).toBeInTheDocument();
-  expect(screen.getByText("Headphones")).toBeInTheDocument();
-  expect(screen.getByText("Mouse")).toBeInTheDocument();
+expect(
+  screen.getByRole("heading", { name: "Laptop" })
+).toBeInTheDocument();
+
+expect(
+  screen.getByRole("heading", { name: "Headphones" })
+).toBeInTheDocument();
+
+expect(
+  screen.getByRole("heading", { name: "Mouse" })
+).toBeInTheDocument();
+
+
 });
 
-test("displays initial total", () => {
-  render(<App />);
+test("displays the initial total", () => {
+render(<App />);
 
-  expect(screen.getByText(/52800/)).toBeInTheDocument();
+
+expect(screen.getByText("Total: ₹52800")).toBeInTheDocument();
+
+
 });
 
-test("increases laptop quantity", async () => {
-  const user = userEvent.setup();
+test("increases laptop quantity and updates the total", () => {
+render(<App />);
 
-  render(<App />);
+fireEvent.click(
+  screen.getByRole("button", {
+    name: /increase laptop quantity/i,
+  })
+);
 
-  const increaseButtons = screen.getAllByRole("button", {
-    name: /increase/i
-  });
+expect(screen.getByText("Quantity: 2")).toBeInTheDocument();
+expect(screen.getByText("Total: ₹102800")).toBeInTheDocument();
 
-  await user.click(increaseButtons[0]);
 
-  expect(screen.getByText(/102800/)).toBeInTheDocument();
 });
 
-test("decreases quantity", async () => {
-  const user = userEvent.setup();
+test("decreases laptop quantity and updates the total", () => {
+render(<App />);
 
-  render(<App />);
 
-  const increaseButtons = screen.getAllByRole("button", {
-    name: /increase/i
-  });
+fireEvent.click(
+  screen.getByRole("button", {
+    name: /increase laptop quantity/i,
+  })
+);
 
-  const decreaseButtons = screen.getAllByRole("button", {
-    name: /decrease/i
-  });
+fireEvent.click(
+  screen.getByRole("button", {
+    name: /decrease laptop quantity/i,
+  })
+);
 
-  await user.click(increaseButtons[0]);
-  await user.click(decreaseButtons[0]);
+expect(screen.getAllByText("Quantity: 1")).toHaveLength(3);
+expect(screen.getByText("Total: ₹52800")).toBeInTheDocument();
 
-  expect(screen.getByText(/52800/)).toBeInTheDocument();
+
+});
+
+test("does not decrease quantity below one", () => {
+render(<App />);
+
+
+fireEvent.click(
+  screen.getByRole("button", {
+    name: /decrease laptop quantity/i,
+  })
+);
+
+expect(screen.getAllByText("Quantity: 1")).toHaveLength(3);
+expect(screen.getByText("Total: ₹52800")).toBeInTheDocument();
+
+
+});
 });
