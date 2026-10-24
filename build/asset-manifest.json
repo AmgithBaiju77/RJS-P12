@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/RJS-P12/static/css/main.481de714.css",
+    "main.js": "/RJS-P12/static/js/main.644d3867.js",
+    "index.html": "/RJS-P12/index.html",
+    "main.481de714.css.map": "/RJS-P12/static/css/main.481de714.css.map",
+    "main.644d3867.js.map": "/RJS-P12/static/js/main.644d3867.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.481de714.css",
+    "static/js/main.644d3867.js"
+  ]
+}
